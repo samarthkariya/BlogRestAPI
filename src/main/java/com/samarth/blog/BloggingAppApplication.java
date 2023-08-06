@@ -20,7 +20,8 @@ public class BloggingAppApplication implements CommandLineRunner {
     @Autowired
     private RoleRepo roleRepo;
 
-    private Logger logger = LoggerFactory.getLogger(BloggingAppApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(BloggingAppApplication.class);
+
     public static void main(String[] args) {
 
         SpringApplication.run(BloggingAppApplication.class, args);
@@ -40,9 +41,9 @@ public class BloggingAppApplication implements CommandLineRunner {
 
             List<Role> list = List.of(role, role1);
 
-           roleRepo.saveAll(list);
+            roleRepo.saveAll(list);
         } catch (Exception e) {
-            logger.error("error "+e.getMessage());
+            logger.error("error " + e.getMessage());
         }
     }
 }
