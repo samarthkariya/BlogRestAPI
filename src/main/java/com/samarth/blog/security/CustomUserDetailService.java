@@ -1,6 +1,5 @@
 package com.samarth.blog.security;
 
-import com.samarth.blog.entity.User;
 import com.samarth.blog.exceptions.ResourceNotFoundException;
 import com.samarth.blog.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-       User user = userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("user","Email "+username,0));
-
-        return user;
+        return userRepo.findByEmail(username).orElseThrow(() -> new ResourceNotFoundException("user", "Email " + username, 0));
     }
 }

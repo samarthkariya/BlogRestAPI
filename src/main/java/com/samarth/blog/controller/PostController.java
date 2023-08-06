@@ -40,12 +40,12 @@ public class PostController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable("userId") Integer userId) {
-        return new ResponseEntity<List<PostDto>>(postService.getPostsByUser(userId), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPostsByUser(userId), HttpStatus.OK);
     }
 
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable("categoryId") Integer categoryId) {
-        return new ResponseEntity<List<PostDto>>(postService.getPostsByCategory(categoryId), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPostsByCategory(categoryId), HttpStatus.OK);
     }
 
     @GetMapping
@@ -53,12 +53,12 @@ public class PostController {
                                                               @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) Integer pageSize,
                                                               @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY_POSTID, required = false) String sortBy,
                                                               @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir) {
-        return new ResponseEntity<CustomResponse<PostDto>>(postService.getA11Post(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getA11Post(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostDto> getPostById(@PathVariable("postId") Integer postId) {
-        return new ResponseEntity<PostDto>(postService.getPostById(postId), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPostById(postId), HttpStatus.OK);
     }
 
     @PutMapping("/{postId}")

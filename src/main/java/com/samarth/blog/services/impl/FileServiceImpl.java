@@ -39,8 +39,6 @@ public class FileServiceImpl implements FileService {
     public InputStream getResource(String path, String pathName) throws FileNotFoundException {
 
         String fullPath = path + File.separator + pathName;
-        InputStream is = new FileInputStream(fullPath);
-
-        return is;
+        return new FileInputStream(fullPath);
     }
 }

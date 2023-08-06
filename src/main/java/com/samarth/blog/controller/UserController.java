@@ -30,7 +30,7 @@ public class UserController {
                                                                @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) Integer pageSize,
                                                                @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY_USERID, required = false) String sortBy,
                                                                @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir) {
-        return new ResponseEntity<CustomResponse<UserDto>>(userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")

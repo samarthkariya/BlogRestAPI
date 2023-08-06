@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,24 +30,25 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request){
-        authenticate(request.getUsername(),request.getPassword());
-        UserDetails userDetails = detailsService.loadUserByUsername(request.getUsername());
-        String token =  helper.generateToken(userDetails);
 
-        JwtResponse response=new JwtResponse();
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) {
+        authenticate(request.getUsername(), request.getPassword());
+        UserDetails userDetails = detailsService.loadUserByUsername(request.getUsername());
+        String token = helper.generateToken(userDetails);
+
+        JwtResponse response = new JwtResponse();
         response.setJwtToken(token);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private void authenticate(String username, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
         try {
             authenticationManager.authenticate(authenticationToken);
-        }catch (BadCredentialsException e){
+        } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid UserName Or Password!!");
         }
     }
@@ -60,5 +60,7 @@ public class AuthController {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public String exceptionHandler(){return "Credential Invalid!!";}
+    public String exceptionHandler() {
+        return "Credential Invalid!!";
+    }
 }
