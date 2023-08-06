@@ -8,4 +8,7 @@ public class AppConstant {
     public static final String SORT_BY_USERID = "id";
     public static final String SORT_DIR = "asc";
 
+    public static final int NORMAL_ROLE=502;
+    public static final int ADMIN_ROLE=501;
+
 }

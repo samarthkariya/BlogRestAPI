@@ -1,0 +1,620 @@
+openapi: "3.0.3"
+info:
+  title: "BloggingApp API"
+  description: "BloggingApp API"
+  version: "1.0.0"
+servers:
+  - url: "https://BloggingApp"
+paths:
+  /api/categories/:
+    get:
+      summary: "GET api/categories/"
+      operationId: "getAllCategory"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "sortBy"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "categoryId"
+        - name: "sortDir"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /api/categories/add:
+    post:
+      summary: "POST api/categories/add"
+      operationId: "createCategory"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /api/categories/{categoryId}:
+    get:
+      summary: "GET api/categories/{categoryId}"
+      operationId: "getCategoryById"
+      parameters:
+        - name: "categoryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+    put:
+      summary: "PUT api/categories/{categoryId}"
+      operationId: "updateCategory"
+      parameters:
+        - name: "categoryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+    delete:
+      summary: "DELETE api/categories/{categoryId}"
+      operationId: "deleteCategory"
+      parameters:
+        - name: "categoryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /api/posts:
+    get:
+      summary: "GET api/posts"
+      operationId: "getAllPost"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "sortBy"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "postId"
+        - name: "sortDir"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDto"
+  /api/posts/category/{categoryId}:
+    get:
+      summary: "GET api/posts/category/{categoryId}"
+      operationId: "getPostByCategory"
+      parameters:
+        - name: "categoryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostDto"
+  /api/posts/image/upload/{postId}:
+    post:
+      summary: "POST api/posts/image/upload/{postId}"
+      operationId: "uploadImage"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "image"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "binary"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDto"
+  /api/posts/image/{imageName}:
+    get:
+      summary: "GET api/posts/image/{imageName}"
+      operationId: "downloadImage"
+      parameters:
+        - name: "imageName"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/posts/search/{keyword}:
+    get:
+      summary: "GET api/posts/search/{keyword}"
+      operationId: "searchByTitle"
+      parameters:
+        - name: "keyword"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostDto"
+  /api/posts/user/{userId}:
+    get:
+      summary: "GET api/posts/user/{userId}"
+      operationId: "getPostByUser"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostDto"
+  /api/posts/user/{userId}/category/{categoryId}:
+    post:
+      summary: "POST api/posts/user/{userId}/category/{categoryId}"
+      operationId: "createPost"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "categoryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDto"
+  /api/posts/{postId}:
+    get:
+      summary: "GET api/posts/{postId}"
+      operationId: "getPostById"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDto"
+    put:
+      summary: "PUT api/posts/{postId}"
+      operationId: "createPost"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDto"
+    delete:
+      summary: "DELETE api/posts/{postId}"
+      operationId: "deletePost"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /api/comments/add/{postId}:
+    post:
+      summary: "POST api/comments/add/{postId}"
+      operationId: "createComment"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CommentDto"
+  /api/comments/delete/{commentId}:
+    delete:
+      summary: "DELETE api/comments/delete/{commentId}"
+      operationId: "deleteComment"
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /api/v1/auth/login:
+    post:
+      summary: "POST api/v1/auth/login"
+      operationId: "createToken"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JwtRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JwtResponse"
+  /api/v1/auth/register:
+    post:
+      summary: "POST api/v1/auth/register"
+      operationId: "registerUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /api/users/:
+    get:
+      summary: "GET api/users/"
+      operationId: "getAllUsers"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "sortBy"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "id"
+        - name: "sortDir"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /api/users/add:
+    post:
+      summary: "POST api/users/add"
+      operationId: "createUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /api/users/{userId}:
+    get:
+      summary: "GET api/users/{userId}"
+      operationId: "getUserById"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    put:
+      summary: "PUT api/users/{userId}"
+      operationId: "updateUser"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    delete:
+      summary: "DELETE api/users/{userId}"
+      operationId: "deleteUser"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+components:
+  schemas:
+    CategoryDto:
+      type: "object"
+      properties:
+        categoryId:
+          type: "integer"
+          format: "int32"
+        categoryTitle:
+          type: "string"
+        categoryDescription:
+          type: "string"
+    ApiResponse:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+        status:
+          type: "boolean"
+    RoleDto:
+      type: "object"
+      properties:
+        roleId:
+          type: "integer"
+          format: "int32"
+        role:
+          type: "string"
+    UserDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        about:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RoleDto"
+    CommentDto:
+      type: "object"
+      properties:
+        commentId:
+          type: "integer"
+          format: "int32"
+        content:
+          type: "string"
+    PostDto:
+      type: "object"
+      properties:
+        postId:
+          type: "integer"
+          format: "int32"
+        title:
+          type: "string"
+        content:
+          type: "string"
+        imageName:
+          type: "string"
+        addedDate:
+          type: "string"
+          format: "date-time"
+        category:
+          $ref: "#/components/schemas/CategoryDto"
+        user:
+          $ref: "#/components/schemas/UserDto"
+        comments:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CommentDto"
+    JwtRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+    JwtResponse:
+      type: "object"
+      properties:
+        jwtToken:
+          type: "string"

@@ -18,7 +18,6 @@ public class CustomResponse<T> {
     private int pageNumber;
     private long totalElements;
     private int totalPages;
-
     private boolean lastPage;
 
 }

@@ -1,6 +1,7 @@
 package com.samarth.blog.payloads;
 
 
+import com.samarth.blog.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -26,4 +30,6 @@ public class UserDto {
     private String password;
     @NotEmpty
     private String about;
+
+    private Set<RoleDto> roles = new HashSet<>();
 }

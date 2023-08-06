@@ -1,9 +1,12 @@
 package com.samarth.blog.services.impl;
 
+import com.samarth.blog.config.AppConstant;
+import com.samarth.blog.entity.Role;
 import com.samarth.blog.entity.User;
 import com.samarth.blog.exceptions.ResourceNotFoundException;
 import com.samarth.blog.payloads.CustomResponse;
 import com.samarth.blog.payloads.UserDto;
+import com.samarth.blog.repositories.RoleRepo;
 import com.samarth.blog.repositories.UserRepo;
 import com.samarth.blog.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,10 +30,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepo roleRepo;
+
+    @Override
+    public UserDto registerNewUser(UserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Role role = roleRepo.findById(AppConstant.NORMAL_ROLE).get();
+        user.getRoles().add(role);
+        return modelMapper.map(userRepo.save(user), UserDto.class);
+    }
+
     @Override
     public UserDto createUser(UserDto userDto) {
+        String pass = userDto.getPassword();
         User user = modelMapper.map(userDto, User.class);
-
+        user.setPassword(passwordEncoder.encode(pass));
         User savedUser = userRepo.save(user);
 
         return modelMapper.map(savedUser, UserDto.class);
